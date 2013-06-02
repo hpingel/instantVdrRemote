@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+
+        <!-- 
+        
+          ****************************************************
+          instantVdrRemote 0.1.1
+          ****************************************************
+          
+          (c) 2013 Henning Pingel ( hepi at yavdr dot org )
+          
+          An easy to use virtual VDR remote control to be used
+          on tablets, smartphones and various web browsers
+          fully configurable and customizable
+          
+          needs VDR plugin restfulapi to be installed 
+           
+          ****************************************************
+          
+          This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+          http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+          ****************************************************
+          
+          instantVdrRemote makes use of jQuery and jQuery Mobile
+          http://jquery.com/
+          http://jquerymobile.com/
+          
+          ****************************************************
+          
+        --> 
+          
+        <title>instantVdrRemote 0.1</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+        <style>
+        
+            @media all and (max-width: 35em) {
+                .virtualRemoteBreakpoint #virtualRemoteBlock1, 
+                .virtualRemoteBreakpoint #virtualRemoteBlock2, 
+                .virtualRemoteBreakpoint #virtualRemoteBlock3, 
+                .virtualRemoteBreakpoint #virtualRemoteBlock4{ 
+                    width: 100%; 
+                    float:none; 
+                }
+            }
+            a#virtRemoteKey-Power {
+                background-image: none;
+                background-color: red;
+            } 
+            a#virtRemoteKey-Record{
+                background-image: none;
+                background-color: red;
+            } 
+            a#virtRemoteKey-Red{
+                background-image: none;
+                background-color: red;
+            } 
+            a#virtRemoteKey-Green{
+                background-image: none;
+                background-color: green;
+            } 
+            a#virtRemoteKey-Yellow{
+                background-image: none;
+                background-color: yellow;
+            }
+            a#virtRemoteKey-Blue{
+                background-image: none;
+                background-color: blue;
+            }
+            
+        </style>
+        <script>
+        
+    var host =  "";
+    //put in the hostname of your VDR here, example:
+    //host = "http://mylocalvdr:8002";
+    
+    var buttonCaptions = {
+
+        User0 : 'User0',
+        User1 : 'User1',
+        User2 : 'User2',
+        User3 : 'User3',
+        User4 : 'User4',
+        User5 : 'User5',
+        User6 : 'User6',
+        User7 : 'User7',
+        User8 : 'User8',
+        User9 : 'User9',
+        
+        Power : 'Power',
+        Setup : 'Setup',
+        Audio : 'Audio',
+        Subtitles : 'Subtitles',
+        Channels : 'Channels',
+        Schedule : 'Schedule',
+        Timers : 'Timers',
+        Recordings : 'Recordings',
+        Commands : 'Commands',
+        
+        Record : 'Record',
+        Play : 'Play',
+        Pause : 'Pause',
+        Stop : 'Stop',
+        
+        Prev : 'Previous',
+        FastRew : 'Fast Rewind',
+        FastFwd : 'Fast Forward',
+        Next : 'Next',
+        
+        Red : 'Red',
+        Green : 'Green',
+        Yellow : 'Yellow',
+        Blue : 'Blue',
+        
+        Menu : 'Menu',
+        Info : 'Info',
+        Ok : 'OK',
+        Back : 'Back',
+        
+        Up : 'Up',
+        Left : 'Left',
+        Right : 'Right',
+        Down : 'Down',
+        
+        VolUp : 'VolUp',
+        VolDn : 'VolDn',
+        Mute : 'Mute',
+        
+        ChanUp : 'ChanUp',
+        ChanDn : 'ChanDn',
+        ChanPrev : 'ChanPrev',
+        
+        None : 'None',
+        Kbd : 'Kbd'
+    };
+        
+    var buttonConfig = {
+         Power      : { icon: 'alert', theme: 'b'},
+         Setup      : {icon: 'gear',theme: 'e'},
+         Audio      : {icon: 'grid',theme: 'e'},
+         Subtitles  : {icon: 'bars',theme: 'e'},
+         Channels   : {icon: 'bars',theme: 'e'},
+         Schedule   : {icon: 'bars',theme: 'e'},
+         Timers     : {icon: 'bars',theme: 'e'},
+         Recordings : {icon: 'bars',theme: 'e'},
+         Commands   : {icon: 'grid',theme: 'b'},
+         Record     : {icon: 'grid',theme: 'b'},
+         Play       : {icon: 'grid',theme: 'b'},
+         Pause      : {icon: 'grid',theme: 'b'},
+         Stop       : {icon: 'grid',theme: 'b'},
+         Prev       : {icon: 'back',theme: 'e'},
+         FastRew    : {icon: 'arrow-l',theme: 'e'},
+         FastFwd    : {icon: 'arrow-r',theme: 'e'},
+         Next       : {icon: 'forward',theme: 'e'},
+         
+         1 : {icon: 'grid',theme: 'e'},
+         2 : {icon: 'grid',theme: 'e'},
+         3 : {icon: 'grid',theme: 'e'},
+         4 : {icon: 'grid',theme: 'e'},
+         5 : {icon: 'grid',theme: 'e'},
+         6 : {icon: 'grid',theme: 'e'},
+         7 : {icon: 'grid',theme: 'e'},
+         8 : {icon: 'grid',theme: 'e'},
+         9 : {icon: 'grid',theme: 'e'},
+         0 : {icon: 'grid',theme: 'c'},
+         
+         Red    : {icon: 'star',theme: 'b'},
+         Green  : {icon: 'star',theme: 'b'},
+         Yellow : {icon: 'star',theme: 'c'},
+         Blue   : {icon: 'star',theme: 'b'},
+         
+         Menu  : {icon: 'home',theme: 'b'},
+         Info  : {icon: 'info',theme: 'b'},
+         Ok    : {icon: 'check',theme: 'e'},
+         
+         Back  : {icon: 'back',theme: 'b'},
+         Up    : {icon: 'arrow-u',theme: 'a'},
+         Left  : {icon: 'arrow-l',theme: 'a'},
+         Right : {icon: 'arrow-r',theme: 'a'},
+         Down  : {icon: 'arrow-d',theme: 'a'},
+         
+         VolUp : {icon: 'plus',theme: 'c'},
+         VolDn : {icon: 'minus',theme: 'c'},
+         Mute  : {icon: 'delete',theme: 'b'},
+         
+         ChanUp   : {icon: 'arrow-u',theme: 'c'},
+         ChanDn   : {icon: 'arrow-d',theme: 'c'},
+         ChanPrev : {icon: 'grid',theme: 'b'},
+         
+         User0 : {icon: 'edit',theme: 'e'},
+         User1 : {icon: 'edit',theme: 'e'},
+         User2 : {icon: 'edit',theme: 'e'},
+         User3 : {icon: 'edit',theme: 'e'},
+         User4 : {icon: 'edit',theme: 'e'},
+         User5 : {icon: 'edit',theme: 'e'},
+         User6 : {icon: 'edit',theme: 'e'},
+         User7 : {icon: 'edit',theme: 'e'},
+         User8 : {icon: 'edit',theme: 'e'},
+         User9 : {icon: 'edit',theme: 'e'},
+         
+         None  : {icon: 'grid',theme: 'b'},
+         Kbd   : {icon: 'grid',theme: 'b'}
+    };
+        
+    var remoteLayout = [
+        //first breakable container with two areas
+        [
+            //first remote section (with 5 rows of buttons)
+            [
+                [ "Power", "Setup", "Audio", "Subtitles" ],
+                [ "Channels", "Schedule" ],
+                [ "Timers", "Recordings" ],
+                [ "Record", "Play", "Pause", "Stop" ],
+                [ "Prev", "FastRew", "FastFwd", "Next" ]
+            ],
+            //second remote section (with 5 rows of buttons)
+            [
+                [ "1", "2", "3" ],
+                [ "4", "5", "6" ],
+                [ "7", "8", "9" ],
+                [ "" , "0" , "" ],
+                [ "Red", "Green", "Yellow", "Blue" ]
+            ]
+        ],
+        //second breakable container with two areas
+        [
+            //third remote section (with 5 rows of buttons)
+            [
+                [ "Menu" ,  "Up" , "Info"   ],
+                [ "Left" ,  "Ok" , "Right"  ],
+                [ "Back" , "Down","ChanPrev"],
+                [ "VolUp",   ""  , "ChanUp" ],
+                [ "VolDn", "Mute", "ChanDn" ]
+            ],
+            //fourth remote section (with 5 rows of buttons)
+            [
+                [ "User1", "User2", "User3" ],
+                [ "User4", "User5", "User6" ],
+                [ "User7", "User8", "User9" ],
+                [ "None" , "User0", "Kbd"   ],
+                [ ""     ,"Commands",""     ]
+            ]
+        ]
+    ];
+        
+
+    $(document).ready(function(){
+        
+        inflateRemote();
+
+        if ( typeof(host) === "undefined" || host === ""){
+            $("#popupHost").popup("open");
+        }
+
+        $( "#popupHost" ).bind({
+           popupafterclose: function(event, ui) { 
+              host = "http://" + $("#host-field").val() + ":" +$("#port-field").val();
+           }
+        });
+        
+        $( ".virtRemoteKey" ).on( "taphold click", function() {
+            //alert("clickhandler ok");
+            var target = $( this );
+            processVirtualRemoteKeypress( target.attr( "id" ) );
+            
+        });
+        
+    });
+            
+
+    function processVirtualRemoteKeypress( id ){
+        var key = id.split('-')[1];
+        //alert("processVirtualRemoteKeypress: " + key);
+        $.ajax({
+                type: "POST",
+                url: host + "/remote/" + key
+            }).done(function( xml) {
+                //todo...
+            }).fail(function( jqXHR, textStatus, errorThrown){
+                if (textStatus === "error")
+                    alert("Error: VDR " + host + " could not be reached.  Is the VDR turned on?");
+                    
+            });
+    }
+    
+    function inflateRemote(){
+        var markup ='',
+            areaCount = 0, buttonKey, caption,
+            gridType, buttonCount, rowLength,
+            container, area, row, button;
+
+        for ( container in remoteLayout){
+            markup += '<div class="ui-grid-a virtualRemoteBreakpoint">';
+            
+            for ( area in remoteLayout[container]){
+                areaCount++;
+                markup += '<div class="ui-block-'+ String.fromCharCode(96 + areaCount) + 
+                          '" id="virtualRemoteBlock'+areaCount+'">'+
+                          '<div class="ui-body ui-body-b">';
+                for ( row in remoteLayout[container][area]){
+                    rowLength = remoteLayout[container][area][row].length;
+                    if ( rowLength === 0) 
+                        alert("Error: row contains no buttons at all, skipping it!");
+                    else{
+                        if ( rowLength > 5 ) alert("Error: row contains more than five buttons!");
+                        gridType = (rowLength > 1 && rowLength < 6) ? String.fromCharCode(95 + rowLength) : 'solo';
+                        markup += '<div class="ui-grid-'+ gridType + '">';
+                        buttonCount = 0;
+                        for ( button in remoteLayout[container][area][row]){
+                            buttonCount++;
+                            buttonKey = $.trim(remoteLayout[container][area][row][button]);
+                            markup += '<div class="ui-block-'+ String.fromCharCode( 96 + buttonCount )+'">';
+                            if ( buttonKey !== "" && typeof(buttonConfig[ buttonKey ]) === "object" ){
+                                caption = buttonCaptions[ buttonKey ] ? buttonCaptions[ buttonKey ] : buttonKey; 
+                                markup += '<a class="virtRemoteKey" id="virtRemoteKey-'+ buttonKey +
+                                      '" data-role="button" href="#" data-icon="' + buttonConfig[ buttonKey ].icon + 
+                                      '" data-iconpos="top" data-theme="'+ buttonConfig[ buttonKey ].theme +
+                                      '" data-mini="true">'+
+                                       caption + '</a>';
+                            }
+                            else if ( buttonKey !== "" && typeof (buttonConfig[ buttonKey ]) === "undefined"){
+                                alert("ERROR: Button '" + buttonKey + "' is not a legal value!");
+                            }
+                            markup += '</div>';
+                        }
+                        markup += '</div>';
+                    }
+                }
+                markup += '</div></div>';
+            }
+            markup += '</div>';
+        }
+        $page= $.mobile.activePage;
+        $content = $page.children( ":jqmData(role=content)" );
+        $content.append( markup );
+        $content.trigger("create");
+    }
+        
+        </script>
+    </head>
+<body>
+    <div id="virtualremote" data-role="page" data-add-back-btn="true">
+        <div data-role="header" data-position="fixed"><h1>instantVdrRemote 0.1.1</h1></div>
+        <div data-role="content">
+            <div data-role="popup" id="popupHost" data-theme="a" class="ui-corner-all">
+                <form>
+                    <div style="padding:10px 20px;">
+                      <h3>Please provide the VDR host name or IP address in your local network</h3>
+                      <p>You can also add it in the sourcecode of this HTML file to make it permanent.</p>
+                      <label for="host">Host name or IP address:</label>
+                      <input type="text" name="host" id="host-field" value="192.168.1.123" placeholder="192.168.1.123" data-theme="a" />
+    
+                      <label for="port">Port of restfulapi plugin:</label>
+                      <input type="text" name="port" id="port-field" value="8002" placeholder="8002" data-theme="a" />
+    
+                      <button type="submit" data-theme="b">OK</button>
+                    </div>
+                </form>
+            </div>
+       </div><!--  end of page content -->
+        
+        <div data-role="footer" data-position="fixed" style="text-align: center;">
+            <div data-enhance="false">
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                    <img data-enhance="false" alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png" />
+                </a>
+            </div>
+        </div>
+    </div><!--  page end -->
+
+</body>
+</html>
