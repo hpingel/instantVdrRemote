@@ -2,6 +2,8 @@ var host =  "";
 //put in the hostname of your VDR here, example:
 //host = "http://mylocalvdr:8002";
 
+var useMiniButtons = true;
+
 /*
 *  buttonCaptions
 *  This object contains the visible labels/captions on the buttons
@@ -80,12 +82,14 @@ var buttonConfig = {
      Schedule   : {icon: 'bars'   ,theme: 'e'},
      Timers     : {icon: 'bars'   ,theme: 'e'},
      Recordings : {icon: 'bars'   ,theme: 'e'},
-     Commands   : {icon: 'grid'   ,theme: 'e'},
+     
+     Commands   : {icon: 'grid'   ,theme: 'b'},
      
      Record     : {icon: 'grid'   ,theme: 'b'},
      Play       : {icon: 'grid'   ,theme: 'b'},
      Pause      : {icon: 'grid'   ,theme: 'b'},
      Stop       : {icon: 'grid'   ,theme: 'b'},
+     
      Prev       : {icon: 'back'   ,theme: 'c'},
      FastRew    : {icon: 'arrow-l',theme: 'c'},
      FastFwd    : {icon: 'arrow-r',theme: 'c'},
@@ -123,7 +127,7 @@ var buttonConfig = {
      
      ChanUp   : {icon: 'arrow-u',theme: 'c'},
      ChanDn   : {icon: 'arrow-d',theme: 'c'},
-     ChanPrev : {icon: 'grid',theme: 'b'},
+     ChanPrev : {icon: 'grid',   theme: 'c'},
      
      User0 : {icon: 'edit',theme: 'e'},
      User1 : {icon: 'edit',theme: 'e'},
@@ -170,44 +174,47 @@ buttonConfig.Subtitles.icon    = 'eye-open';
 var remoteLayout = [
     //first breakable container with two areas
     [
-        //first remote section (with 5 rows of buttons)
-        [
-            /*[ "Power", "Setup", "Audio", "Subtitles" ],*/
-            [ "Channels", "Schedule" ],
-            [ "Timers", "Recordings" ],
-            [ "Record", "Play", "Pause", "Stop" ],
-            [ "Prev", "FastRew", "FastFwd", "Next" ],
-            [ "Red", "Green", "Yellow", "Blue" ]
-        ],
-        //second remote section (with 5 rows of buttons)
-/*        [
-            [ "1", "2", "3" ],
-            [ "4", "5", "6" ],
-            [ "7", "8", "9" ],
-            [ "" , "0" , "" ],
-            [ "Red", "Green", "Yellow", "Blue" ]
-        ]
-    ],
-    //second breakable container with two areas
-    [*/
-        //third remote section (with 5 rows of buttons)
+        //first remote section (with 4 rows of buttons)
         [
             [ "Menu" ,  "Up" , "Info"   ],
             [ "Left" ,  "Ok" , "Right"  ],
             [ "Back" , "Down","ChanPrev"],
-            [ "VolUp",   ""  , "ChanUp" ],
-            [ "VolDn", "Mute", "ChanDn" ]
-/*        ],
-        //fourth remote section (with 5 rows of buttons)
+            [ "VolDn", "Mute", "VolUp", "ChanDn", "ChanUp" ]
+        ],
+        //second remote section (with 4 rows of buttons)
         [
-            [ "User1", "User2", "User3" ],
-            [ "User4", "User5", "User6" ],
-            [ "User7", "User8", "User9" ],
-            [ "None" , "User0", "Kbd"   ],
-            [ ""     ,"Commands",""     ]*/
-        ]
+         [ "Red", "Green", "Yellow", "Blue" ],
+         [ "Channels", "Schedule", "Timers", "Recordings" ],
+         [ "Record", "Play", "Pause", "Stop" ],
+         [ "Prev", "FastRew", "FastFwd", "Next" ]
+     ]
     ]
 ];
+
+var cutterPageContent = [
+    [ "1", "2", "3" ],
+    [ "4", "5", "6" ],
+    [ "7", "8", "9" ],
+    [ "" , "0" , "" ],
+    [ "Ok" ]
+];
+
+var keyMacroPageContent = [
+    [ "User1", "User2", "User3" ],
+    [ "User4", "User5", "User6" ],
+    [ "User7", "User8", "User9" ],
+    [ "None" , "User0", "Kbd"   ],
+    [ ""     ,"Commands",""     ]
+];
+/*
+var keyMacroPageContent = [
+   [ "", "User1", "User2", "User3", "" ],
+   [ "", "User4", "User5", "User6", "" ],
+   [ "", "User7", "User8", "User9", "" ],
+   [ "", "None" , "User0", "Kbd", ""   ],
+   [ "", ""     ,"Commands","", ""     ]
+];
+*/
 
 var panelContent = { 
     right: [

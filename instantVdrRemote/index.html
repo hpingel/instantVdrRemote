@@ -85,6 +85,7 @@
     $(document).ready(function(){
         
         inflateRemote();
+        fillKeyMacroPage();
         fillPanel( "left");
         fillPanel( "right");
         
@@ -200,8 +201,8 @@ function getButtonMarkup( buttonKey, caption, icon, theme, buttonType ){
     return '<a class="'+buttonType+'" id="' + buttonType + '-' + buttonKey +
               '" data-role="button" href="#" data-icon="' + icon + 
               '" data-iconpos="top" data-theme="'+ theme +
-              '" data-mini="true">'+
-              caption + '</a>';
+              ( useMiniButtons ? '" data-mini="true': '')+
+              '">'+ caption + '</a>';
 }
 
 function fillPanel( side ){
@@ -215,18 +216,24 @@ function fillPanel( side ){
     $panel.trigger("create");
 }
 
+function fillKeyMacroPage(){
+    var markup = renderSimpleGridAreaContent( keyMacroPageContent );
+    $content = $( "#keyMacroPageContent");
+    $content.append( markup );
+    $content.trigger("create");
+}
+
         </script>
     </head>
 <body>
     <div id="virtualremote" data-role="page" data-theme="a">
     
         <div data-role="header" data-position="fixed">
-            <h1>instantVdrRemote</h1>
+            <h1>IVR</h1>
             <a href="#leftPanel" data-icon="resize-horizontal">Left panel</a>
             <a href="#rightPanel" data-icon="resize-horizontal">Right panel</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
-                    <!-- li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li  -->
                     <li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li>
                     <li><a href="#cutterTablePage" data-icon="cut">Cutter table</a></li>
                     <li><a href="#keyMacroPage" data-icon="cut">Key macros</a></li>
@@ -251,6 +258,48 @@ function fillPanel( side ){
                     </div>
                 </form>
             </div>
+       </div><!--  end of page content -->
+        
+        <div data-role="footer" data-position="fixed" style="text-align: center;">
+            <div data-enhance="false">
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                    <img data-enhance="false" alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png" />
+                </a>
+            </div>
+        </div>
+        <div data-role="panel" id="leftPanel" data-position="left" data-theme="c" data-display="overlay">
+           <div id="leftPanelContent"></div>
+        </div>
+        <div data-role="panel" id="rightPanel" data-position="right" data-theme="c" data-display="overlay">
+           <div id="rightPanelContent"></div>
+        </div>
+    </div><!--  page end -->
+
+
+
+
+
+
+
+
+
+    <div id="keyMacroPage" data-role="page" data-theme="a">
+    
+        <div data-role="header" data-position="fixed">
+            <h1>IVR</h1>
+            <a href="#leftPanel" data-icon="resize-horizontal">Left panel</a>
+            <a href="#rightPanel" data-icon="resize-horizontal">Right panel</a>
+            <div data-role="navbar" data-iconpos="left">
+                <ul>
+                    <!-- li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li  -->
+                    <li><a href="#virtualremote">Remote</a></li>
+                    <li><a href="#cutterTablePage" data-icon="cut">Cutter table</a></li>
+                    <li><a href="#keyMacroPage" data-icon="cut" class="ui-btn-active ui-state-persist">Key macros</a></li>
+                </ul>
+            </div>
+        </div>
+            
+        <div data-role="content" id="keyMacroPageContent">
        </div><!--  end of page content -->
         
         <div data-role="footer" data-position="fixed" style="text-align: center;">
