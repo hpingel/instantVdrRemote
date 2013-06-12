@@ -2,8 +2,6 @@ var host =  "";
 //put in the hostname of your VDR here, example:
 //host = "http://mylocalvdr:8002";
 
-host = "http://zotacvdr:8002";
-
 var useMiniButtons = true;
 var responseTimeout = 400; //milliseconds
 
