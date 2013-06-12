@@ -130,7 +130,7 @@ var buttonConfig = {
      
      ChanUp   : {icon: 'arrow-u',theme: 'c'},
      ChanDn   : {icon: 'arrow-d',theme: 'c'},
-     ChanPrev : {icon: 'grid',   theme: 'c'},
+     ChanPrev : {icon: 'farefresh',   theme: 'c'},
      
      User0 : {icon: 'edit',theme: 'e'},
      User1 : {icon: 'edit',theme: 'e'},

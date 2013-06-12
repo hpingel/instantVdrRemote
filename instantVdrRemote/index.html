@@ -38,7 +38,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
-        <link rel="stylesheet" href="jqm-icon-pack-3.0.0-fa.css" />
+        <link rel="stylesheet" href="jQuery-Mobile-Icon-Pack/font-awesome/jqm-icon-pack-3.0.0-fa.css" />
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
         <script src="config.js"></script>
@@ -119,7 +119,6 @@
                 var params = $( this ).attr( "id" ).split('-');
                 var key = params[1];
                 var id = params[0];
-                //alert( key + " "+ id);
                 //if (key == "ClosePanel_right"){
                     $( "#" +key ).panel( "close" );
                 //}
@@ -238,12 +237,12 @@ function fillPage( pageId, pageContent, config, captions){
     
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
-            <a href="#leftPanel" data-icon="resize-horizontal">Shortcuts</a>
-            <a href="#rightPanel" data-icon="resize-horizontal">Digits</a>
+            <a href="#leftPanel" data-icon="caret-left">Shortcuts</a>
+            <a href="#rightPanel" data-icon="caret-right">Digits</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" class="ui-btn-active ui-state-persist">General</a></li>
-                    <li><a href="#cutterPage" data-icon="cut" data-transition="slide">Cut recordings</a></li>
+                    <li><a href="#cutterPage" data-icon="cut" data-transition="slide">Playback & Cut</a></li>
                     <li><a href="#keyMacroPage" data-icon="user" data-transition="slide">Key macros</a></li>
                 </ul>
             </div>
@@ -275,10 +274,10 @@ function fillPage( pageId, pageContent, config, captions){
                 </a>
             </div>
         </div>
-        <div data-role="panel" id="leftPanel" data-position="left" data-theme="c" data-display="overlay">
+        <div data-role="panel" id="leftPanel" data-position="left" data-theme="a" data-display="overlay">
            <div id="leftPanelContent"></div>
         </div>
-        <div data-role="panel" id="rightPanel" data-position="right" data-theme="c" data-display="overlay">
+        <div data-role="panel" id="rightPanel" data-position="right" data-theme="a" data-display="overlay">
            <div id="rightPanelContent"></div>
         </div>
     </div><!--  page end -->
@@ -289,12 +288,12 @@ function fillPage( pageId, pageContent, config, captions){
     
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
-            <a href="#leftPanel2" data-icon="resize-horizontal">Shortcuts</a>
-            <a href="#rightPanel2" data-icon="resize-horizontal">Digits</a>
+            <a href="#leftPanel2" data-icon="caret-left">Shortcuts</a>
+            <a href="#rightPanel2" data-icon="caret-right">Digits</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" data-transition="slide" data-direction="reverse">General</a></li>
-                    <li><a href="#cutterPage" data-icon="cut" class="ui-btn-active ui-state-persist">Cut recordings</a></li>
+                    <li><a href="#cutterPage" data-icon="cut" class="ui-btn-active ui-state-persist">Playback & Cut</a></li>
                     <li><a href="#keyMacroPage" data-icon="user" data-transition="slide">Key macros</a></li>
                 </ul>
             </div>
@@ -310,10 +309,10 @@ function fillPage( pageId, pageContent, config, captions){
                 </a>
             </div>
         </div>
-        <div data-role="panel" id="leftPanel2" data-position="left" data-theme="c" data-display="overlay">
+        <div data-role="panel" id="leftPanel2" data-position="left" data-theme="a" data-display="overlay">
            <div id="leftPanel2Content"></div>
         </div>
-        <div data-role="panel" id="rightPanel2" data-position="right" data-theme="c" data-display="overlay">
+        <div data-role="panel" id="rightPanel2" data-position="right" data-theme="a" data-display="overlay">
            <div id="rightPanel2Content"></div>
         </div>
     </div><!--  page end -->
@@ -323,12 +322,12 @@ function fillPage( pageId, pageContent, config, captions){
     
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
-            <a href="#leftPanel3" data-icon="resize-horizontal">Shortcuts</a>
-            <a href="#rightPanel3" data-icon="resize-horizontal">Digits</a>
+            <a href="#leftPanel3" data-icon="carez-left">Shortcuts</a>
+            <a href="#rightPanel3" data-icon="caret-right">Digits</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" data-transition="slide" data-direction="reverse">General</a></li>
-                    <li><a href="#cutterPage" data-icon="cut" data-transition="slide" data-direction="reverse">Cut recordings</a></li>
+                    <li><a href="#cutterPage" data-icon="cut" data-transition="slide" data-direction="reverse">Playback & Cut</a></li>
                     <li><a href="#keyMacroPage" data-icon="user" class="ui-btn-active ui-state-persist">Key macros</a></li>
                 </ul>
             </div>
@@ -344,10 +343,10 @@ function fillPage( pageId, pageContent, config, captions){
                 </a>
             </div>
         </div>
-        <div data-role="panel" id="leftPanel3" data-position="left" data-theme="c" data-display="overlay">
+        <div data-role="panel" id="leftPanel3" data-position="left" data-theme="a" data-display="overlay">
            <div id="leftPanel3Content"></div>
         </div>
-        <div data-role="panel" id="rightPanel3" data-position="right" data-theme="c" data-display="overlay">
+        <div data-role="panel" id="rightPanel3" data-position="right" data-theme="a" data-display="overlay">
            <div id="rightPanel3Content"></div>
         </div>
     </div><!--  page end -->
