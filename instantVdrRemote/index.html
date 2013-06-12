@@ -87,8 +87,13 @@
         inflateRemote();
         fillPage("#keyMacroPageContent", keyMacroPageContent,  buttonConfig, buttonCaptions );
         fillPage("#cutterPageContent", cutterPageContent, cutterButtonConfig, cutterButtonCaptions );
-        fillPanel( "left");
-        fillPanel( "right");
+
+        fillPanel( "","left");
+        fillPanel( "","right");
+        fillPanel( "2","left");
+        fillPanel( "2","right");
+        fillPanel( "3","left");
+        fillPanel( "3","right");
         
         if ( typeof(host) === "undefined" || host === ""){
             $("#popupHost").popup("open");
@@ -111,13 +116,16 @@
                 $("#popupHost").popup("open");
             }
             else{
-                var key = $( this ).attr( "id" ).split('-')[1];
-                if (key == "ClosePanel_right"){
-                    $( "#rightPanel" ).panel( "close" );
-                }
-                if (key == "ClosePanel_left"){
-                    $( "#leftPanel" ).panel( "close" );
-                }
+                var params = $( this ).attr( "id" ).split('-');
+                var key = params[1];
+                var id = params[0];
+                //alert( key + " "+ id);
+                //if (key == "ClosePanel_right"){
+                    $( "#" +key ).panel( "close" );
+                //}
+                /*if (key == "ClosePanel_left"){
+                    $( "#" +key ).panel( "close" );
+                }*/
             }
         });
         
@@ -181,9 +189,10 @@ function renderSimpleGridAreaContent( area, config, captions ){
                     caption = captions[ buttonKey ] ? captions[ buttonKey ] : buttonKey; 
                     markup += getButtonMarkup( buttonKey, caption, config[ buttonKey ].icon, config[ buttonKey ].theme, "virtRemoteKey" );
                 }
-                else if ( buttonKey.substring(0,4) === "ivr_"){
-                    key = buttonKey.substring(4);
-                    markup += getButtonMarkup( key, ivrButton[key].caption, ivrButton[key].icon, ivrButton[key].theme, "ivrKey");
+                else if ( buttonKey.substring(0,4) === "ivr-"){
+                    var key = buttonKey.split('-')[1];
+                    var id = buttonKey.split('-')[2];
+                    markup += getButtonMarkup( id, ivrButton[key].caption, ivrButton[key].icon, ivrButton[key].theme, "ivrKey");
                 }
                 
                 else if ( buttonKey !== "" && typeof (config[ buttonKey ]) === "undefined"){
@@ -205,15 +214,15 @@ function getButtonMarkup( buttonKey, caption, icon, theme, buttonType ){
               '">'+ caption + '</a>';
 }
 
-function fillPanel( side ){
-    var content = panelContent[side];
-    content.push( [ "ivr_ClosePanel_" + side ] );
-    var markup = renderSimpleGridAreaContent( content, buttonConfig, buttonCaptions ); 
-    $panel = $( "#" + side + "Panel" );
-    $content = $( "#" + side + "PanelContent" );
+function fillPanel( panelId, side ){
+    var panelContentArray = panelContent[side];
+    panelContentArray.push( [ "ivr-ClosePanel_" + side + "-" + side + "Panel" + panelId ] );
+    var markup = renderSimpleGridAreaContent( panelContentArray, buttonConfig, buttonCaptions ); 
+    $panel = $( "#" + side + "Panel"+ panelId );
+    $content = $( "#" + side + "Panel" + panelId + "Content" );
     $content.replaceWith( markup );
-    //$panel.trigger("updatelayout");
     $panel.trigger("create");
+    panelContentArray.pop();
 }
 
 function fillPage( pageId, pageContent, config, captions){
@@ -229,13 +238,13 @@ function fillPage( pageId, pageContent, config, captions){
     
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
-            <a href="#leftPanel" data-icon="resize-horizontal">Left panel</a>
-            <a href="#rightPanel" data-icon="resize-horizontal">Right panel</a>
+            <a href="#leftPanel" data-icon="resize-horizontal">Shortcuts</a>
+            <a href="#rightPanel" data-icon="resize-horizontal">Digits</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" class="ui-btn-active ui-state-persist">General</a></li>
-                    <li><a href="#cutterPage" data-icon="cut">Cut recordings</a></li>
-                    <li><a href="#keyMacroPage" data-icon="user">Key macros</a></li>
+                    <li><a href="#cutterPage" data-icon="cut" data-transition="slide">Cut recordings</a></li>
+                    <li><a href="#keyMacroPage" data-icon="user" data-transition="slide">Key macros</a></li>
                 </ul>
             </div>
         </div>
@@ -280,14 +289,13 @@ function fillPage( pageId, pageContent, config, captions){
     
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
-            <a href="#leftPanel" data-icon="resize-horizontal">Left panel</a>
-            <a href="#rightPanel" data-icon="resize-horizontal">Right panel</a>
+            <a href="#leftPanel2" data-icon="resize-horizontal">Shortcuts</a>
+            <a href="#rightPanel2" data-icon="resize-horizontal">Digits</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
-                    <!-- li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li  -->
-                    <li><a href="#virtualremote" data-icon="hand-down">General</a></li>
+                    <li><a href="#virtualremote" data-icon="hand-down" data-transition="slide" data-direction="reverse">General</a></li>
                     <li><a href="#cutterPage" data-icon="cut" class="ui-btn-active ui-state-persist">Cut recordings</a></li>
-                    <li><a href="#keyMacroPage" data-icon="user">Key macros</a></li>
+                    <li><a href="#keyMacroPage" data-icon="user" data-transition="slide">Key macros</a></li>
                 </ul>
             </div>
         </div>
@@ -302,11 +310,11 @@ function fillPage( pageId, pageContent, config, captions){
                 </a>
             </div>
         </div>
-        <div data-role="panel" id="leftPanel" data-position="left" data-theme="c" data-display="overlay">
-           <div id="leftPanelContent"></div>
+        <div data-role="panel" id="leftPanel2" data-position="left" data-theme="c" data-display="overlay">
+           <div id="leftPanel2Content"></div>
         </div>
-        <div data-role="panel" id="rightPanel" data-position="right" data-theme="c" data-display="overlay">
-           <div id="rightPanelContent"></div>
+        <div data-role="panel" id="rightPanel2" data-position="right" data-theme="c" data-display="overlay">
+           <div id="rightPanel2Content"></div>
         </div>
     </div><!--  page end -->
 
@@ -315,13 +323,12 @@ function fillPage( pageId, pageContent, config, captions){
     
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
-            <a href="#leftPanel" data-icon="resize-horizontal">Left panel</a>
-            <a href="#rightPanel" data-icon="resize-horizontal">Right panel</a>
+            <a href="#leftPanel3" data-icon="resize-horizontal">Shortcuts</a>
+            <a href="#rightPanel3" data-icon="resize-horizontal">Digits</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
-                    <!-- li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li  -->
-                    <li><a href="#virtualremote" data-icon="hand-down">General</a></li>
-                    <li><a href="#cutterPage" data-icon="cut">Cut recordings</a></li>
+                    <li><a href="#virtualremote" data-icon="hand-down" data-transition="slide" data-direction="reverse">General</a></li>
+                    <li><a href="#cutterPage" data-icon="cut" data-transition="slide" data-direction="reverse">Cut recordings</a></li>
                     <li><a href="#keyMacroPage" data-icon="user" class="ui-btn-active ui-state-persist">Key macros</a></li>
                 </ul>
             </div>
@@ -337,11 +344,11 @@ function fillPage( pageId, pageContent, config, captions){
                 </a>
             </div>
         </div>
-        <div data-role="panel" id="leftPanel" data-position="left" data-theme="c" data-display="overlay">
-           <div id="leftPanelContent"></div>
+        <div data-role="panel" id="leftPanel3" data-position="left" data-theme="c" data-display="overlay">
+           <div id="leftPanel3Content"></div>
         </div>
-        <div data-role="panel" id="rightPanel" data-position="right" data-theme="c" data-display="overlay">
-           <div id="rightPanelContent"></div>
+        <div data-role="panel" id="rightPanel3" data-position="right" data-theme="c" data-display="overlay">
+           <div id="rightPanel3Content"></div>
         </div>
     </div><!--  page end -->
 
