@@ -96,15 +96,15 @@ var buttonConfig = {
      FastFwd    : {icon: 'arrow-r',theme: 'c'},
      Next       : {icon: 'forward',theme: 'c'},
      
-     1 : {icon: 'grid',theme: 'e'},
-     2 : {icon: 'grid',theme: 'e'},
-     3 : {icon: 'grid',theme: 'e'},
-     4 : {icon: 'grid',theme: 'e'},
-     5 : {icon: 'grid',theme: 'e'},
-     6 : {icon: 'grid',theme: 'e'},
-     7 : {icon: 'grid',theme: 'e'},
-     8 : {icon: 'grid',theme: 'e'},
-     9 : {icon: 'grid',theme: 'e'},
+     1 : {icon: 'grid',theme: 'c'},
+     2 : {icon: 'grid',theme: 'c'},
+     3 : {icon: 'grid',theme: 'c'},
+     4 : {icon: 'grid',theme: 'c'},
+     5 : {icon: 'grid',theme: 'c'},
+     6 : {icon: 'grid',theme: 'c'},
+     7 : {icon: 'grid',theme: 'c'},
+     8 : {icon: 'grid',theme: 'c'},
+     9 : {icon: 'grid',theme: 'c'},
      0 : {icon: 'grid',theme: 'c'},
      
      Red    : {icon: 'star',theme: 'b'},
@@ -122,12 +122,12 @@ var buttonConfig = {
      Right : {icon: 'arrow-r',theme: 'a'},
      Down  : {icon: 'arrow-d',theme: 'a'},
      
-     VolUp : {icon: 'plus',theme: 'c'},
-     VolDn : {icon: 'minus',theme: 'c'},
+     VolUp : {icon: 'plus',theme: 'e'},
+     VolDn : {icon: 'minus',theme: 'e'},
      Mute  : {icon: 'delete',theme: 'c'},
      
-     ChanUp   : {icon: 'arrow-u',theme: 'c'},
-     ChanDn   : {icon: 'arrow-d',theme: 'c'},
+     ChanUp   : {icon: 'arrow-u',theme: 'e'},
+     ChanDn   : {icon: 'arrow-d',theme: 'e'},
      ChanPrev : {icon: 'farefresh',   theme: 'c'},
      
      User0 : {icon: 'edit',theme: 'e'},
@@ -185,8 +185,9 @@ var remoteLayout = [
         ],
         //second remote section (with 4 rows of buttons)
         [
-            [ "VolDn", "Mute", "VolUp" ],
-            [ "ChanDn", "ChanPrev", "ChanUp" ],
+            [ "VolUp", "ChanUp" ],
+            [ "", "Mute", "ChanPrev","" ],
+            [ "VolDn", "ChanDn" ],
             [ "Record", "Play", "Pause", "Stop" ],
             [ "Prev", "FastRew", "FastFwd", "Next" ]
         ]
