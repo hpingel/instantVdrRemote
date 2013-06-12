@@ -62,19 +62,19 @@
                 background-image: none;
                 background-color: red;
             } 
-            a#virtRemoteKey-Red{
+            div#virtualremote a#virtRemoteKey-Red{
                 background-image: none;
                 background-color: red;
             } 
-            a#virtRemoteKey-Green{
+            div#virtualremote a#virtRemoteKey-Green{
                 background-image: none;
                 background-color: green;
             } 
-            a#virtRemoteKey-Yellow{
+            div#virtualremote a#virtRemoteKey-Yellow{
                 background-image: none;
                 background-color: yellow;
             }
-            a#virtRemoteKey-Blue{
+            div#virtualremote a#virtRemoteKey-Blue{
                 background-image: none;
                 background-color: blue;
             }
@@ -85,7 +85,8 @@
     $(document).ready(function(){
         
         inflateRemote();
-        fillKeyMacroPage();
+        fillPage("#keyMacroPageContent", keyMacroPageContent,  buttonConfig, buttonCaptions );
+        fillPage("#cutterPageContent", cutterPageContent, cutterButtonConfig, cutterButtonCaptions );
         fillPanel( "left");
         fillPanel( "right");
         
@@ -122,13 +123,12 @@
         
     });
 
-
     function processVirtualRemoteKeypress( key ){
         //alert("processVirtualRemoteKeypress: " + key);
         $.ajax({
                 type: "POST",
                 url: host + "/remote/" + key,
-                timeout: 300
+                timeout: responseTimeout
             }).done(function( xml) {
                 //todo...
             }).fail(function( jqXHR, textStatus, errorThrown){
@@ -152,7 +152,7 @@
                           '" id="virtualRemoteBlock'+areaCount+'">'+
                           //'<div class="ui-body ui-body-b">'+
                           '';
-                markup += renderSimpleGridAreaContent( remoteLayout[container][area] );
+                markup += renderSimpleGridAreaContent( remoteLayout[container][area], buttonConfig, buttonCaptions );
                 markup += '</div>';//+'</div>';
             }
             markup += '</div>';
@@ -162,7 +162,7 @@
         $content.trigger("create");
     }
 
-function renderSimpleGridAreaContent( area ){
+function renderSimpleGridAreaContent( area, config, captions ){
     var markup = "";
     for ( row in area){
         rowLength = area[row].length;
@@ -177,16 +177,16 @@ function renderSimpleGridAreaContent( area ){
                 buttonCount++;
                 buttonKey = $.trim(area[row][button]);
                 markup += '<div class="ui-block-'+ String.fromCharCode( 96 + buttonCount )+'">';
-                if ( buttonKey !== "" && typeof(buttonConfig[ buttonKey ]) === "object"){
-                    caption = buttonCaptions[ buttonKey ] ? buttonCaptions[ buttonKey ] : buttonKey; 
-                    markup += getButtonMarkup( buttonKey, caption, buttonConfig[ buttonKey ].icon, buttonConfig[ buttonKey ].theme, "virtRemoteKey" );
+                if ( buttonKey !== "" && typeof(config[ buttonKey ]) === "object"){
+                    caption = captions[ buttonKey ] ? captions[ buttonKey ] : buttonKey; 
+                    markup += getButtonMarkup( buttonKey, caption, config[ buttonKey ].icon, config[ buttonKey ].theme, "virtRemoteKey" );
                 }
                 else if ( buttonKey.substring(0,4) === "ivr_"){
                     key = buttonKey.substring(4);
                     markup += getButtonMarkup( key, ivrButton[key].caption, ivrButton[key].icon, ivrButton[key].theme, "ivrKey");
                 }
                 
-                else if ( buttonKey !== "" && typeof (buttonConfig[ buttonKey ]) === "undefined"){
+                else if ( buttonKey !== "" && typeof (config[ buttonKey ]) === "undefined"){
                     alert("ERROR: Button '" + buttonKey + "' is not a legal value!");
                 }
                 markup += '</div>';
@@ -208,7 +208,7 @@ function getButtonMarkup( buttonKey, caption, icon, theme, buttonType ){
 function fillPanel( side ){
     var content = panelContent[side];
     content.push( [ "ivr_ClosePanel_" + side ] );
-    var markup = renderSimpleGridAreaContent( content ); 
+    var markup = renderSimpleGridAreaContent( content, buttonConfig, buttonCaptions ); 
     $panel = $( "#" + side + "Panel" );
     $content = $( "#" + side + "PanelContent" );
     $content.replaceWith( markup );
@@ -216,10 +216,9 @@ function fillPanel( side ){
     $panel.trigger("create");
 }
 
-function fillKeyMacroPage(){
-    var markup = renderSimpleGridAreaContent( keyMacroPageContent );
-    $content = $( "#keyMacroPageContent");
-    $content.append( markup );
+function fillPage( pageId, pageContent, config, captions){
+    $content = $( pageId );
+    $content.append( renderSimpleGridAreaContent( pageContent, config, captions ) );
     $content.trigger("create");
 }
 
@@ -234,9 +233,9 @@ function fillKeyMacroPage(){
             <a href="#rightPanel" data-icon="resize-horizontal">Right panel</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
-                    <li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li>
-                    <li><a href="#cutterTablePage" data-icon="cut">Cutter table</a></li>
-                    <li><a href="#keyMacroPage" data-icon="cut">Key macros</a></li>
+                    <li><a href="#virtualremote" data-icon="hand-down" class="ui-btn-active ui-state-persist">General</a></li>
+                    <li><a href="#cutterPage" data-icon="cut">Cut recordings</a></li>
+                    <li><a href="#keyMacroPage" data-icon="user">Key macros</a></li>
                 </ul>
             </div>
         </div>
@@ -277,10 +276,39 @@ function fillKeyMacroPage(){
 
 
 
-
-
-
-
+    <div id="cutterPage" data-role="page" data-theme="a">
+    
+        <div data-role="header" data-position="fixed">
+            <h1>IVR</h1>
+            <a href="#leftPanel" data-icon="resize-horizontal">Left panel</a>
+            <a href="#rightPanel" data-icon="resize-horizontal">Right panel</a>
+            <div data-role="navbar" data-iconpos="left">
+                <ul>
+                    <!-- li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li  -->
+                    <li><a href="#virtualremote" data-icon="hand-down">General</a></li>
+                    <li><a href="#cutterPage" data-icon="cut" class="ui-btn-active ui-state-persist">Cut recordings</a></li>
+                    <li><a href="#keyMacroPage" data-icon="user">Key macros</a></li>
+                </ul>
+            </div>
+        </div>
+            
+        <div data-role="content" id="cutterPageContent">
+       </div><!--  end of page content -->
+        
+        <div data-role="footer" data-position="fixed" style="text-align: center;">
+            <div data-enhance="false">
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                    <img data-enhance="false" alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png" />
+                </a>
+            </div>
+        </div>
+        <div data-role="panel" id="leftPanel" data-position="left" data-theme="c" data-display="overlay">
+           <div id="leftPanelContent"></div>
+        </div>
+        <div data-role="panel" id="rightPanel" data-position="right" data-theme="c" data-display="overlay">
+           <div id="rightPanelContent"></div>
+        </div>
+    </div><!--  page end -->
 
 
     <div id="keyMacroPage" data-role="page" data-theme="a">
@@ -292,9 +320,9 @@ function fillKeyMacroPage(){
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <!-- li><a href="#virtualremote" class="ui-btn-active ui-state-persist">Remote</a></li  -->
-                    <li><a href="#virtualremote">Remote</a></li>
-                    <li><a href="#cutterTablePage" data-icon="cut">Cutter table</a></li>
-                    <li><a href="#keyMacroPage" data-icon="cut" class="ui-btn-active ui-state-persist">Key macros</a></li>
+                    <li><a href="#virtualremote" data-icon="hand-down">General</a></li>
+                    <li><a href="#cutterPage" data-icon="cut">Cut recordings</a></li>
+                    <li><a href="#keyMacroPage" data-icon="user" class="ui-btn-active ui-state-persist">Key macros</a></li>
                 </ul>
             </div>
         </div>

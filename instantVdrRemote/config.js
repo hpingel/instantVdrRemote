@@ -3,6 +3,7 @@ var host =  "";
 //host = "http://mylocalvdr:8002";
 
 var useMiniButtons = true;
+var responseTimeout = 400; //milliseconds
 
 /*
 *  buttonCaptions
@@ -176,28 +177,75 @@ var remoteLayout = [
     [
         //first remote section (with 4 rows of buttons)
         [
-            [ "Menu" ,  "Up" , "Info"   ],
+            [ "Back", "Menu" ,  "Info" ],
+            [ "" ,  "Up" , ""   ],
             [ "Left" ,  "Ok" , "Right"  ],
-            [ "Back" , "Down","ChanPrev"],
-            [ "VolDn", "Mute", "VolUp", "ChanDn", "ChanUp" ]
+            [ "" , "Down",""],
+            [ "Red", "Green", "Yellow", "Blue" ]
         ],
         //second remote section (with 4 rows of buttons)
         [
-         [ "Red", "Green", "Yellow", "Blue" ],
-         [ "Channels", "Schedule", "Timers", "Recordings" ],
-         [ "Record", "Play", "Pause", "Stop" ],
-         [ "Prev", "FastRew", "FastFwd", "Next" ]
-     ]
+            [ "VolDn", "Mute", "VolUp" ],
+            [ "ChanDn", "ChanPrev", "ChanUp" ],
+            [ "Record", "Play", "Pause", "Stop" ],
+            [ "Prev", "FastRew", "FastFwd", "Next" ]
+        ]
     ]
 ];
 
 var cutterPageContent = [
-    [ "1", "2", "3" ],
-    [ "4", "5", "6" ],
-    [ "7", "8", "9" ],
-    [ "" , "0" , "" ],
-    [ "Ok" ]
+    [ "Ok",  "Blue", "2" ],
+    [ "Green", "1", "3", "Yellow" ],
+    [ "Prev", "FastRew", "FastFwd", "Next" ],
+    [ "7", "4", "6", "9" ],
+    ["Pause", "Play","8"],
+    [ "0", "Red" ]
 ];
+
+var cutterButtonConfig = {
+	0: { theme: 'e', icon: 'flag'}, //bookmark, pushpin also possible
+	1: { theme: 'b', icon: 'angle-left'},
+	3: { theme: 'b', icon: 'angle-right'},
+	4: { theme: 'c', icon: 'arrow-l'},
+	6: { theme: 'c', icon: 'arrow-r'},
+	7: { theme: 'c', icon: 'step-backward'},
+	9: { theme: 'c', icon: 'step-forward'},
+	8: { theme: 'a', icon: 'repeat'},
+	2: { theme: 'e', icon: 'cut'},
+	Ok: { theme: 'e', icon: 'fasearch'},
+    Red    : {icon: 'star',theme: 'b'},
+    Green  : {icon: 'double-angle-left',theme: 'b'},
+    Yellow : {icon: 'double-angle-right',theme: 'b'},
+    Blue   : {icon: 'star',theme: 'a'},
+    Play   : {icon: 'play' ,theme: 'a'},
+    Pause  : {icon: 'pause',theme: 'a'},
+    Prev       : {icon: 'circle-arrow-left'   ,theme: 'b'},
+    Next       : {icon: 'circle-arrow-right',theme: 'b'},
+    FastRew    : {icon: 'fast-backward',theme: 'a'},
+    FastFwd    : {icon: 'fast-forward',theme: 'a'}
+};
+
+var cutterButtonCaptions = {
+	0: 'Set or remove edit mark at current position',
+	4: 'Move mark backward',
+	6: 'Move mark forward',
+	7: 'Jump to previous mark',
+	9: 'Jump to next mark',
+	8: 'Play 3 secs before mark',
+	2: 'Cut recording according to marks',
+	Ok: 'Show/hide OSD timeline',
+    Prev : '-90',
+    FastRew : 'Fast Rewind',
+    FastFwd : 'Fast Forward',
+    Next : '+90',
+    1: '-10',
+    3: '+10',
+    Green: '-60',
+    Yellow: '+60',
+    Blue: 'Leave',
+    Red: 'Jump to...'
+};
+
 
 var keyMacroPageContent = [
     [ "User1", "User2", "User3" ],
@@ -206,34 +254,19 @@ var keyMacroPageContent = [
     [ "None" , "User0", "Kbd"   ],
     [ ""     ,"Commands",""     ]
 ];
-/*
-var keyMacroPageContent = [
-   [ "", "User1", "User2", "User3", "" ],
-   [ "", "User4", "User5", "User6", "" ],
-   [ "", "User7", "User8", "User9", "" ],
-   [ "", "None" , "User0", "Kbd", ""   ],
-   [ "", ""     ,"Commands","", ""     ]
-];
-*/
 
 var panelContent = { 
     right: [
         [ "1", "2", "3" ],
         [ "4", "5", "6" ],
         [ "7", "8", "9" ],
-        [ "" , "0" , "" ],
-        [ "Ok" ]
+        [ "" , "0" , "Ok" ]
     ],
     left: [
         [ "Power", "Setup" ],
         ["Audio", "Subtitles" ],
-        [ "User1", "User2" ],
-        [ "User3", "User4" ],
-        [ "User5", "User6" ],
-        [ "User7", "User8" ],
-        [ "User9", "User0" ],
-        [ "None",  "Kbd"   ],
-        [ "Commands"       ]
+        [ "Channels", "Schedule"],
+        ["Timers", "Recordings" ]
     ]
 };
 
