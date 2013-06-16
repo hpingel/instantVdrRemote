@@ -2,9 +2,9 @@ var host =  "";
 //put in the hostname of your VDR here, example:
 //host = "http://mylocalvdr:8002";
 
-var useMiniButtons = true;
-var responseTimeout = 800; //milliseconds, slow devices need higher timeouts...
-
+var useMiniButtons = true,
+    responseTimeout = 800, //milliseconds, slow devices need higher timeouts...
+    loadInfoInterval = 3000; //milliseconds
 /*
 *  buttonCaptions
 *  This object contains the visible labels/captions on the buttons

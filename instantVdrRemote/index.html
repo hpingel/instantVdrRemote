@@ -86,8 +86,10 @@
         <script>
 
     $(document).ready(function(){
-        
+
         globalStatus = {};
+        globalStatus.numberOfTimedOutRequests = 0;
+        globalStatus.numberOfSuccessfulRequests = 0;
         globalStatus.video = {};
         globalStatus.lastUpdate = 0;
         globalLiveStatusContainer = '<div class="ui-grid-solo"><div class="ui-block-a" id="LiveStatus">'+
@@ -109,6 +111,8 @@
 
         $( "#buttonHostOK" ).on( "click", function() {
             host = "http://" + $("#host-field").val() + ":" +$("#port-field").val();
+            globalStatus.numberOfTimedOutRequests = 0;
+            globalStatus.numberOfSuccessfulRequests = 0;
         });
 
         $( ".virtRemoteKey" ).on( "click", function() {
@@ -136,13 +140,16 @@
             }
         });
         checkIfRequestInfoOutdated();
-        setInterval( checkIfRequestInfoOutdated, 3000 );
+        setInterval( checkIfRequestInfoOutdated, loadInfoInterval );
     });
 
     function checkIfRequestInfoOutdated(){
-        if ( $.now() - globalStatus.lastUpdate > 4000){
+        
+        if ( host !== "" && $.now() - globalStatus.lastUpdate > loadInfoInterval - 100){
             requestInfo();
         }
+//        else if (globalStatus.lastUpdate > 0 )
+//           alert("too early: " + $.now() + " " + ($.now() - globalStatus.lastUpdate)  + " " + globalStatus.lastUpdate);
     }
     
     function requestInfo(){
@@ -151,8 +158,11 @@
             url: host + "/info.json",
             timeout: responseTimeout
         }).done(function( json ) {
+            globalStatus.lastUpdate = $.now();
+            //alert( globalStatus.lastUpdate);
             if (typeof (json.video) === "object" )
             {
+                globalStatus.numberOfSuccessfulRequests++;
                 var changed = (globalStatus.mode !== "playback");
                 globalStatus.mode = "playback";
                 globalStatus.video.name = json.video.name;
@@ -178,11 +188,11 @@
                     $.mobile.changePage( $page, { transition: "slide", changeHash: true, showLoadMsg: true });
                 }
             }
-            globalStatus.lastUpdate = $.now();
         }).fail(function( jqXHR, textStatus, errorThrown){
-           // if (textStatus === "timeout"){
-           $("#popupHost").popup("open");
-           //}
+           globalStatus.numberOfTimedOutRequests++;
+           //alert (textStatus);
+           if (host === "" || (globalStatus.numberOfTimedOutRequests > 5 && globalStatus.numberOfSuccessfulRequests == 0))
+               $("#popupHost").popup("open");
         });
     }
 
@@ -192,11 +202,14 @@
             url: host + "/remote/" + key,
             timeout: responseTimeout
         }).done(function( xml) {
+            globalStatus.numberOfSuccessfulRequests++;
             if (callback !== "" && typeof callback === "function")
                 callback();
         }).fail(function( jqXHR, textStatus, errorThrown){
-           // if (textStatus === "timeout"){
-           $("#popupHost").popup("open");
+            globalStatus.numberOfTimedOutRequests++;
+           // if (textStatus === "timeout")
+           if ( globalStatus.numberOfSuccessfulRequests === 0)
+               $("#popupHost").popup("open");
            //}
         });
     }
@@ -374,7 +387,7 @@ function fillPage( pageId, pageContent, config, captions){
         <div data-role="header" data-position="fixed">
             <h1>IVR 0.2-pre1</h1>
             <a href="#leftPanel2" data-icon="caret-left">Shortcuts</a>
-            <a href="#rightPanel2" data-icon="caret-right">Number pads</a>
+            <a href="#rightPanel2" data-icon="caret-right">Number pad</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" data-transition="slide" data-direction="reverse">General</a></li>
