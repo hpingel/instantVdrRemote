@@ -2,6 +2,9 @@ var host =  "";
 //put in the hostname of your VDR here, example:
 //host = "http://mylocalvdr:8002";
 
+host = "http://zotacvdr:8002";
+//host = "http://pvr:8002";
+
 var useMiniButtons = true;
 var responseTimeout = 400; //milliseconds
 
@@ -200,7 +203,7 @@ var cutterPageContent = [
     [ "Prev", "FastRew", "FastFwd", "Next" ],
     [ "7", "4", "6", "9" ],
     ["Pause", "Play","8"],
-    [ "0", "Red" ]
+    [ "0", "ivr-JumpInPlayback", "Red" ]
 ];
 
 var cutterButtonConfig = {
@@ -281,5 +284,10 @@ var ivrButton = {
         theme: "a",
         icon: "arrow-r",
         caption: "Close Panel"
+    },
+    JumpInPlayback : {
+        theme: "b",
+        icon: "star",
+        caption: "Jump to..."
     }
 };

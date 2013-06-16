@@ -84,16 +84,17 @@
 
     $(document).ready(function(){
         
-        inflateRemote();
+    	var globalStatus = {};
+    	
         fillPage("#keyMacroPageContent", keyMacroPageContent,  buttonConfig, buttonCaptions );
         fillPage("#cutterPageContent", cutterPageContent, cutterButtonConfig, cutterButtonCaptions );
-
         fillPanel( "","left");
         fillPanel( "","right");
         fillPanel( "2","left");
         fillPanel( "2","right");
         fillPanel( "3","left");
         fillPanel( "3","right");
+        inflateRemote();
         
         if ( typeof(host) === "undefined" || host === ""){
             $("#popupHost").popup("open");
@@ -108,7 +109,7 @@
                 $("#popupHost").popup("open");
             }
             else{
-                processVirtualRemoteKeypress( $( this ).attr( "id" ).split('-')[1] );
+                processVirtualRemoteKeypress( $( this ).attr( "id" ).split('-')[1], "" );
             }
         });
         $( ".ivrKey" ).on( "click", function() {
@@ -117,34 +118,91 @@
             }
             else{
                 var params = $( this ).attr( "id" ).split('-');
-                var key = params[1];
-                var id = params[0];
-                //if (key == "ClosePanel_right"){
-                    $( "#" +key ).panel( "close" );
-                //}
-                /*if (key == "ClosePanel_left"){
-                    $( "#" +key ).panel( "close" );
-                }*/
+                var key = params[2];
+                var id = params[1];
+                //alert( key + " " + id);
+                if (key === "ClosePanel_left" || key === "ClosePanel_right"){
+                    $( "#" +id ).panel( "close" );
+                }
+                else if ( key === "JumpInPlayback")
+                    var mp = new multiKeyPress( [ 'Red', '0', '4', '7', 'Ok' ] );
+                
             }
         });
         
     });
 
-    function processVirtualRemoteKeypress( key ){
-        //alert("processVirtualRemoteKeypress: " + key);
+    function requestInfo( ){
         $.ajax({
-                type: "POST",
-                url: host + "/remote/" + key,
-                timeout: responseTimeout
-            }).done(function( xml) {
-                //todo...
-            }).fail(function( jqXHR, textStatus, errorThrown){
-               // if (textStatus === "timeout"){
-               $("#popupHost").popup("open");
-               //}
-            });
+            type: "GET",
+            url: host + "/info.json",
+            timeout: responseTimeout
+        }).done(function( json ) {
+            if (typeof (json.video) === "object" )
+            {
+                globalStatus.mode = "playback";
+                globalStatus.video.name = json.video.name;
+                globalStatus.video.filename = json.video.filename;
+            }
+            else if (typeof (json.channel) === "object" )
+            {
+                globalStatus.mode = "livetv";
+                globalStatus.channel = json.channel;
+                globalStatus.eventid = json.eventid;
+                globalStatus.start_time = json.start_time;
+                globalStatus.duration = json.duration;
+                globalStatus.title = json.title;
+            }
+        }).fail(function( jqXHR, textStatus, errorThrown){
+           // if (textStatus === "timeout"){
+           $("#popupHost").popup("open");
+           //}
+        });
+    }
+
+    function processVirtualRemoteKeypress( key, callback ){
+        $.ajax({
+            type: "POST",
+            url: host + "/remote/" + key,
+            timeout: responseTimeout
+        }).done(function( xml) {
+            if (callback !== "" && typeof callback === "function")
+                callback();
+        }).fail(function( jqXHR, textStatus, errorThrown){
+           // if (textStatus === "timeout"){
+           $("#popupHost").popup("open");
+           //}
+        });
     }
     
+    function multiKeyPress( keys ){
+        this.keys = keys;
+        this.pointer = 0;
+        this.pressCurrent();
+        this.that = this;
+    }
+    
+    multiKeyPress.prototype.pressCurrent = function(){
+        //alert("now sending " + this.keys[ this.pointer ] );
+        that = this;
+        processVirtualRemoteKeypress( this.keys[ this.pointer ], 
+             function(){ that.callbackOnSuccess(); }
+        );
+    }
+
+    multiKeyPress.prototype.callbackOnSuccess = function( ){
+        //alert("callback...");
+        this.nextPress();
+    }
+    multiKeyPress.prototype.nextPress = function( ){
+        //alert("Success, looking for next key");
+        this.pointer++
+        if ( this.pointer < this.keys.length)
+            this.pressCurrent();
+        //else
+            //alert("finished");
+    }
+
     function inflateRemote(){
         var markup ='',
             areaCount = 0, buttonKey, caption,
@@ -191,7 +249,8 @@ function renderSimpleGridAreaContent( area, config, captions ){
                 else if ( buttonKey.substring(0,4) === "ivr-"){
                     var key = buttonKey.split('-')[1];
                     var id = buttonKey.split('-')[2];
-                    markup += getButtonMarkup( id, ivrButton[key].caption, ivrButton[key].icon, ivrButton[key].theme, "ivrKey");
+                    //alert(buttonKey );
+                    markup += getButtonMarkup( id + "-" + key, ivrButton[key].caption, ivrButton[key].icon, ivrButton[key].theme, "ivrKey");
                 }
                 
                 else if ( buttonKey !== "" && typeof (config[ buttonKey ]) === "undefined"){
@@ -238,7 +297,7 @@ function fillPage( pageId, pageContent, config, captions){
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
             <a href="#leftPanel" data-icon="caret-left">Shortcuts</a>
-            <a href="#rightPanel" data-icon="caret-right">Digits</a>
+            <a href="#rightPanel" data-icon="caret-right">Number pad</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" class="ui-btn-active ui-state-persist">General</a></li>
@@ -289,7 +348,7 @@ function fillPage( pageId, pageContent, config, captions){
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
             <a href="#leftPanel2" data-icon="caret-left">Shortcuts</a>
-            <a href="#rightPanel2" data-icon="caret-right">Digits</a>
+            <a href="#rightPanel2" data-icon="caret-right">Number pads</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" data-transition="slide" data-direction="reverse">General</a></li>
@@ -323,7 +382,7 @@ function fillPage( pageId, pageContent, config, captions){
         <div data-role="header" data-position="fixed">
             <h1>IVR</h1>
             <a href="#leftPanel3" data-icon="carez-left">Shortcuts</a>
-            <a href="#rightPanel3" data-icon="caret-right">Digits</a>
+            <a href="#rightPanel3" data-icon="caret-right">Number pad</a>
             <div data-role="navbar" data-iconpos="left">
                 <ul>
                     <li><a href="#virtualremote" data-icon="hand-down" data-transition="slide" data-direction="reverse">General</a></li>
