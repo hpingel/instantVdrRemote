@@ -2,9 +2,6 @@ var host =  "";
 //put in the hostname of your VDR here, example:
 //host = "http://mylocalvdr:8002";
 
-host = "http://zotacvdr:8002";
-//host = "http://pvr:8002";
-
 var useMiniButtons = true;
 var responseTimeout = 400; //milliseconds
 
@@ -288,6 +285,12 @@ var ivrButton = {
     JumpInPlayback : {
         theme: "b",
         icon: "star",
-        caption: "Jump to..."
-    }
+        caption: "Jump to 47"
+    }/*,
+    LiveStatus : {
+        theme: "b",
+        icon: "star",
+        caption: "Live status"
+    	
+    }*/
 };
