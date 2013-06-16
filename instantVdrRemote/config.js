@@ -3,7 +3,7 @@ var host =  "";
 //host = "http://mylocalvdr:8002";
 
 var useMiniButtons = true;
-var responseTimeout = 400; //milliseconds
+var responseTimeout = 800; //milliseconds, slow devices need higher timeouts...
 
 /*
 *  buttonCaptions
